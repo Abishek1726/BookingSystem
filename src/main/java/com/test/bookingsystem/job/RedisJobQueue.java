@@ -17,8 +17,6 @@ public class RedisJobQueue implements JobQueue {
     @Override
     public Collection<Job> getJobs() {
         Long now = System.currentTimeMillis();
-        Set<Job> jobs = redisJobTemplate.opsForZSet().rangeByScore(QUEUE_KEY,-1, now, 0, 10);
-        redisJobTemplate.opsForZSet().remove("key", jobs);
         List<Object> results = redisJobTemplate.execute(new SessionCallback<List<Object>>() {
             @Override
             public List<Object> execute(RedisOperations redisOperations) throws DataAccessException {
